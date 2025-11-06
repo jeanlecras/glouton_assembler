@@ -46,7 +46,7 @@ public class Contig implements Sequence{
 		System.out.println(System.getProperty("user.dir"));
 
 		String filename = "/scr/assembly/my_reads.txt" ;
-		File mmonFichierTexte = new File (System.getProperty("user.dir") + filename) ;
+		File monFichierTexte = new File(System.getProperty("user.dir") + filename) ;
 		// Simple test to verify that the file exists .
 		if (monFichierTexte.exists()) {
 			System.out.println("The file " + filename + " is present in the given directory\n") ;
