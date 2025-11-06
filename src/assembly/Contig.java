@@ -45,7 +45,7 @@ public class Contig implements Sequence{
 	public static void main(String[] args) throws IOException {
 		System.out.println(System.getProperty("user.dir"));
 
-		String filename = "/scr/assembly/my_reads.txt" ;
+		String filename = "/src/assembly/my_reads.txt" ;
 		File monFichierTexte = new File(System.getProperty("user.dir") + filename) ;
 		// Simple test to verify that the file exists .
 		if (monFichierTexte.exists()) {
