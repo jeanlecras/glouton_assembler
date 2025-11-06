@@ -8,19 +8,19 @@ public class Read implements Sequence{
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return super.toString();
+		return getSeq();
 	}
 
 	@Override
 	public int getLength() {
 		// TODO Auto-generated method stub
-		return 0;
+		return len;
 	}
 
 	@Override
 	public String getSeq() {
 		// TODO Auto-generated method stub
-		return null;
+		return seq;
 	}
 	
 	public static void main(String[] args) {
