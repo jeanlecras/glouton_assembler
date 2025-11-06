@@ -1,3 +1,4 @@
+package assembly;
 
 public interface Sequence {
 	
@@ -6,5 +7,5 @@ public interface Sequence {
 	public abstract int getLength();
 	public abstract String getSeq();
 	
-
+	
 }

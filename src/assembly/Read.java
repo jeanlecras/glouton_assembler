@@ -1,8 +1,27 @@
+package assembly;
 
 public class Read implements Sequence{
 
-	int len ;
-	String seq ;
+	private int len ;
+	private String seq ;
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
+
+	@Override
+	public int getLength() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getSeq() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	public static void main(String[] args) {
 		Read r1 = new Read("azertyuiop");
