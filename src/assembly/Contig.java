@@ -39,6 +39,21 @@ public class Contig implements Sequence{
 		len = contig.length();
 		nb_fusions = 0;
 	}
+
+	private String fastaFormat() {
+		StringBuilder sb = new StringBuilder();
+
+		// ligne d'en-tete
+		sb.append(">sequence\n"); // id ?
+
+		// 60 nucleotide par ligne 
+		for (int i = 0; i < contig.length(); i += 60) {
+			int end = Math.min(i + 60, contig.length());
+			sb.append(contig, i, end).append("\n");
+		}
+
+		return sb.toString();
+	}
 	
 	public static void main(String[] args) throws IOException {
 		System.out.println(System.getProperty("user.dir"));
