@@ -39,6 +39,7 @@ public class Contig implements Sequence{
 		len = contig.length();
 		nb_fusions = 0;
 	}
+	
 
 	@Override
 	public String fastaFormat() {
@@ -98,7 +99,11 @@ public class Contig implements Sequence{
 	public Contig fusion(Read r) {
 		int overlap = this.bestOverlap(r);
 		String newSeq = this.contig + r.getSeq().substring(overlap);
-		return new Contig(newSeq);
+
+		Contig nouveau = new Contig(newSeq);
+		nouveau.nb_fusions = this.nb_fusions + 1;
+
+		return nouveau;
 	}
 
 
@@ -130,6 +135,7 @@ public class Contig implements Sequence{
 		br.close() ;
 
 		Contig contig = new Contig(list_reads.get(0));
+		list_reads.remove(0);
 
 		// assemblage glouton
 		while (true) {
@@ -150,7 +156,7 @@ public class Contig implements Sequence{
 
 		}
 
-		System.out.println("\nContig obtained with " + contig.getLength() + " bases");
+		System.out.println("\nContig obtained with " + contig.nb_fusions + " reads");
 		System.out.println(contig.fastaFormat());
 		
 	}
