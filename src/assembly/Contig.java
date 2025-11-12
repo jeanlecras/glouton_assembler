@@ -95,9 +95,15 @@ public class Contig implements Sequence{
 	}
 	
 
-	public String fusion(Read r) {
-		return this.contig + r;
+	public Contig fusion(Read r) {
+		int overlap = this.bestOverlap(r);
+		String newSeq = this.contig + r.getSeq().substring(overlap);
+		return new Contig(newSeq);
 	}
+
+
+
+
 
 
 	public static void main(String[] args) throws IOException {
@@ -113,7 +119,7 @@ public class Contig implements Sequence{
 			System.out.println("The file " + filename + " is NOT present in the given directory ") ;
 		}
 
-		List<Read> list_reads = new LinkedList<Read>() ;
+		LinkedList<Read> list_reads = new LinkedList<Read>() ;
 
 		BufferedReader br = new BufferedReader(new FileReader(monFichierTexte)) ;
 		String line ;
@@ -123,29 +129,29 @@ public class Contig implements Sequence{
 		}
 		br.close() ;
 
-		Contig contig1 = new Contig(list_reads.get(0));
-		System.out.println(contig1.fastaFormat());
-		
+		Contig contig = new Contig(list_reads.get(0));
 
+		// assemblage glouton
+		while (true) {
+			int idx = contig.nextRead(list_reads);
+			
+			if (idx == -1) {
+				break;
+			}
 
-		Read r1 = new Read("ACGTACGT");
-   		Read r2 = new Read("GTACGTAA");
-    	Contig c = new Contig(r1);
+			// Récuperer le meilleur read
+			Read best = list_reads.get(idx);
 
-    	System.out.println("Contig: " + c.getSeq());
-    	System.out.println("Read:   " + r2.getSeq());
-    	System.out.println("Best overlap: " + c.bestOverlap(r2));
+			contig = contig.fusion(best);
 
-		LinkedList<Read> reads = new LinkedList<>();
-		reads.add(new Read("TTTTTTTTTTTTTTT"));
-		reads.add(new Read("GTACGTAA"));  
-		reads.add(new Read("TACGTACGT"));
-		reads.add(new Read("ACGTACGT"));
+			list_reads.remove(idx);
 
-		Contig contig = new Contig("ACGTACGT");
-		int idx = contig.nextRead(reads);
+			System.out.println("Fusion with " + idx + ", still " + list_reads.size() + "reads to assemble... work in process");
 
-		System.out.println("best read index = " + idx);
+		}
+
+		System.out.println("\nContig obtained with " + contig.getLength() + " bases");
+		System.out.println(contig.fastaFormat());
 		
 	}
 }
