@@ -40,11 +40,12 @@ public class Contig implements Sequence{
 		nb_fusions = 0;
 	}
 
-	private String fastaFormat() {
+	@Override
+	public String fastaFormat() {
 		StringBuilder sb = new StringBuilder();
 
 		// ligne d'en-tete
-		sb.append(">sequence\n"); // id ?
+		sb.append(">contig_").append(nb_fusions).append("\n"); 
 
 		// 60 nucleotide par ligne 
 		for (int i = 0; i < contig.length(); i += 60) {
@@ -79,6 +80,7 @@ public class Contig implements Sequence{
 		br.close() ;
 
 		Contig contig1 = new Contig(list_reads.get(0));
+		System.out.println(contig1.fastaFormat());
 		
 	}
 }
