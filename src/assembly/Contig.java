@@ -72,6 +72,27 @@ public class Contig implements Sequence{
 		}
 		return maxOverlap;
 	}
+
+	public int nextRead(LinkedList<Read> l) {
+		int bestIndex = -1;
+		int bestOverlap = 0;
+
+		for (int i = 0; i < l.size(); i++) {
+			Read current = l.get(i);
+			int overlap = this.bestOverlap(current);
+
+			if (overlap > bestOverlap) {
+				bestOverlap = overlap;
+				bestIndex = i;
+			}
+		}
+
+		if (bestOverlap < 8) {
+			return -1;
+		}
+
+		return bestIndex;
+	}
 	
 	public static void main(String[] args) throws IOException {
 		System.out.println(System.getProperty("user.dir"));
@@ -98,6 +119,27 @@ public class Contig implements Sequence{
 
 		Contig contig1 = new Contig(list_reads.get(0));
 		System.out.println(contig1.fastaFormat());
+		
+
+
+		Read r1 = new Read("ACGTACGT");
+   		Read r2 = new Read("GTACGTAA");
+    	Contig c = new Contig(r1);
+
+    	System.out.println("Contig: " + c.getSeq());
+    	System.out.println("Read:   " + r2.getSeq());
+    	System.out.println("Best overlap: " + c.bestOverlap(r2));
+
+		LinkedList<Read> reads = new LinkedList<>();
+		reads.add(new Read("TTTTTTTTTTTTTTT"));
+		reads.add(new Read("GTACGTAA"));  
+		reads.add(new Read("TACGTACGT"));
+		reads.add(new Read("ACGTACGT"));
+
+		Contig contig = new Contig("ACGTACGT");
+		int idx = contig.nextRead(reads);
+
+		System.out.println("best read index = " + idx);
 		
 	}
 }
