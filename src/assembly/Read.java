@@ -50,6 +50,10 @@ public class Read implements Sequence{
 		}
 		return mismatchcount <=1;
 	}
+
+	public static nearlyEquals(String s1, String s2, float perror) {
+		
+	}
 	
 	public static void main(String[] args) {
 		Read r1 = new Read("azertyuiop");
