@@ -55,6 +55,23 @@ public class Contig implements Sequence{
 
 		return sb.toString();
 	}
+
+	public int bestOverlap(Read r) {
+		String seqRead = r.getSeq();
+		int maxOverlap = 0;
+		int maxPossible = Math.min(this.contig.length(), seqRead.length());
+
+		// on teste tout les chevauchement possible 
+		for (int k = 1; k <= maxPossible; k++) {
+			String endContig = this.contig.substring(this.contig.length() - k);
+			String startRead = seqRead.substring(0, k);
+
+			if (endContig.equals(startRead)) {
+				maxOverlap = k; // on garde le plus grand k trouvé
+			}
+		}
+		return maxOverlap;
+	}
 	
 	public static void main(String[] args) throws IOException {
 		System.out.println(System.getProperty("user.dir"));
