@@ -51,8 +51,26 @@ public class Read implements Sequence{
 		return mismatchcount <=1;
 	}
 
-	public static nearlyEquals(String s1, String s2, float perror) {
-		
+	public static boolean nearlyEquals(String s1, String s2, float perror) {
+		if (s1 == null || s2 == null || s1.length() != s2.length()){
+			return false;
+		}
+
+		int length = s1.length();
+		if (length == 0) {
+			return true; // deux chaine vides = 0% d'erreur
+		}
+
+		int mismatchcount = 0;
+		for (int i = 0; i < length; i++) {
+			if (s1.charAt(i) != s2.charAt(i)) {
+				mismatchcount++;
+			}
+		}
+
+		double mismatchpercent = (mismatchcount * 100.0) / length;
+
+		return mismatchpercent < perror;
 	}
 	
 	public static void main(String[] args) {
