@@ -94,6 +94,12 @@ public class Contig implements Sequence{
 		return bestIndex;
 	}
 	
+
+	public String fusion(Read r) {
+		return this.contig + r;
+	}
+
+
 	public static void main(String[] args) throws IOException {
 		System.out.println(System.getProperty("user.dir"));
 
