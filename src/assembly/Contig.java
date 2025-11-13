@@ -220,8 +220,10 @@ public class Contig implements Sequence{
 			list_reads.remove(idx);
 
 			System.out.println("Fusion with " + idx + ", still " + list_reads.size() + "reads to assemble... work in process");
-
+			
 		}
+
+
 
 		System.out.println("\nContig obtained with " + contig.nb_fusions + " reads");
 		System.out.println(contig.fastaFormat());
