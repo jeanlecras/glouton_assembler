@@ -74,6 +74,27 @@ public class Contig implements Sequence{
 		return maxOverlap;
 	}
 
+	public int bestOverlapWithError(Read r, float perror) {
+		String seqRead = r.getSeq();
+		String seqContig = this.contig;
+
+		int max
+		int maxOverlap = 0;
+
+		int maxPossible = Math.min(this.contig.length(), seqRead.length());
+
+		// on teste tout les chevauchement possible 
+		for (int k = 1; k <= maxPossible; k++) {
+			String endContig = this.contig.substring(this.contig.length() - k);
+			String startRead = seqRead.substring(0, k);
+
+			if (endContig.equals(startRead)) {
+				maxOverlap = k; // on garde le plus grand k trouvé
+			}
+		}
+		return maxOverlap;
+	}
+
 	public int nextRead(LinkedList<Read> l) {
 		int bestIndex = -1;
 		int bestOverlap = 0;
@@ -95,6 +116,10 @@ public class Contig implements Sequence{
 		return bestIndex;
 	}
 	
+	public int nextReadWithErrors(LinkedList<Read> l, float perror) {
+
+	}
+
 
 	public Contig fusion(Read r) {
 		int overlap = this.bestOverlap(r);
@@ -105,10 +130,6 @@ public class Contig implements Sequence{
 
 		return nouveau;
 	}
-
-
-
-
 
 
 	public static void main(String[] args) throws IOException {
