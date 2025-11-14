@@ -17,6 +17,10 @@ public class Contig implements Sequence{
 		return this.len;
 	}
 
+	public int getNbFusion(){
+		return this.nb_fusions;
+	}
+
 	@Override
 	public String getSeq() {
 		return this.contig;
@@ -252,8 +256,8 @@ public class Contig implements Sequence{
 			System.out.println("Fusion with " + idx + ", still " + list_readsWithError.size() + "reads to assemble... work in process");
 		}
 
-		System.out.println("\nContig obtained with " + contig.nb_fusions + " reads (with sequencing errors)");
-		System.out.println(contig.fastaFormat());
+		System.out.println("\nContig obtained with " + contigWitherror.nb_fusions + " reads (with sequencing errors)");
+		System.out.println(contigWitherror.fastaFormat());
 
 
 		

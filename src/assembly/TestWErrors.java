@@ -1,10 +1,17 @@
+package assembly;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.io.BufferedReader;
+		
 public class TestWErrors {
-    public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
 		System.out.println(System.getProperty("user.dir"));
 
 		String filenamewitherror = "/src/assembly/my_reads_with_sequencing_errors.txt";
 
-		File monFichierTexte = new File(System.getProperty("user.dir") + filename) ;
+		File monFichierTextewitherror = new File(System.getProperty("user.dir") + filenamewitherror);
 
 		// test check file with error
 		if (monFichierTextewitherror.exists()) {
@@ -28,7 +35,7 @@ public class TestWErrors {
 		System.out.println("========WITH SEQUENCING ERROR========");
 
 		Contig contigWitherror = new Contig(list_readsWithError.get(0));
-		float perror = 10.0f;
+		float perror = 4.0f;
 		list_readsWithError.remove(0);
 
 		//assemblage glouton
@@ -47,9 +54,9 @@ public class TestWErrors {
 			System.out.println("Fusion with " + idx + ", still " + list_readsWithError.size() + "reads to assemble... work in process");
 		}
 
-		System.out.println("\nContig obtained with " + contig.nb_fusions + " reads (with sequencing errors)");
-		System.out.println(contig.fastaFormat());
+		System.out.println("\nContig obtained with " + contigWitherror.getNbFusion() + " reads (with sequencing errors)");
+		System.out.println(contigWitherror.fastaFormat());
 
 
-        
+	}  
 }
