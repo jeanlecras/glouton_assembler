@@ -17,7 +17,7 @@ public class Contig implements Sequence{
 		return this.len;
 	}
 
-	public int getNbFusion(){
+	public int getNbFusion(){ // permet d'utiliser nb_fusion en dehors de la Class Contig 
 		return this.nb_fusions;
 	}
 
@@ -159,107 +159,47 @@ public class Contig implements Sequence{
 
 
 	public static void main(String[] args) throws IOException {
-		System.out.println(System.getProperty("user.dir"));
+		System.out.println("=== TESTS DE LA CLASSE CONTIG ===");
 
-		String filename = "/src/assembly/my_reads.txt" ;
-		String filenamewitherror = "/src/assembly/my_reads_with_sequencing_errors.txt";
+		// ---------- Test 1 : constructeur ----------
+		Read r1 = new Read("ACGTACGT");
+		Contig c1 = new Contig(r1);
 
-		File monFichierTexte = new File(System.getProperty("user.dir") + filename) ;
-		File monFichierTextewitherror = new File(System.getProperty("user.dir") + filenamewitherror);
+		System.out.println("Test constructeur : " + c1.getSeq());
+		// attendu : ACGTACGT
 
-		// Simple test to verify that the file exists .
-		if (monFichierTexte.exists()) {
-			System.out.println("The file " + filename + " is present in the given directory\n") ;
-		} else {
-			System.out.println("The file " + filename + " is NOT present in the given directory ") ;
-		}
+		// ---------- Test 2 : bestOverlap ----------
+		Read r2 = new Read("ACGTGGGG");
+		int overlap = c1.bestOverlap(r2);
 
-		// test check file with error
-		if (monFichierTextewitherror.exists()) {
-			System.out.println("The file " + filenamewitherror + " is present in the given directory\n");
-		} else {
-			System.out.println("The file " + filenamewitherror + " is NOT present in the given directory ") ;
-		}
+		System.out.println("Test bestOverlap (attendu = 4) : " + overlap);
+		// ACGTACGT
+		//     ACGTGGGG
+		// overlap = ACGT = 4
 
+		// ---------- Test 3 : fusion ----------
+		Contig c2 = c1.fusion(r2);
+		System.out.println("Test fusion : " + c2.getSeq());
+		// attendu : ACGTACGT + GGGG = ACGTACGTGGGG
 
-		LinkedList<Read> list_reads = new LinkedList<Read>() ;
-		LinkedList<Read> list_readsWithError = new LinkedList<Read>() ;
+		// ---------- Test 4 : nextRead ----------
+		LinkedList<Read> list = new LinkedList<>();
+		list.add(new Read("CGTAAAA"));   // overlap 3
+		list.add(new Read("ACGTGG"));    // overlap 4 (meilleur)
+		list.add(new Read("TTTTTT"));    // overlap 0
 
-		BufferedReader br = new BufferedReader(new FileReader(monFichierTexte)) ;
-		String line ;
-		while ((line = br.readLine()) != null) {
-			Read r1 = new Read(line) ;
-			list_reads.add(r1) ;
-		}
-		br.close() ;
+		int idx = c1.nextRead(list);
+		System.out.println("Test nextRead (attendu = 1) : " + idx);
 
-		BufferedReader brwitherror = new BufferedReader(new FileReader(monFichierTextewitherror)) ;
-		String linewitherror;
-		while ((linewitherror = brwitherror.readLine()) != null) {
-			Read r2 = new Read(linewitherror);
-			list_readsWithError.add(r2);
-		}
-		brwitherror.close();
+		// ---------- Test 5 : bestOverlapWithError ----------
+		Read r3 = new Read("ACCTGGGG");  // 1 erreur dans "ACGT" → 75% correct
+		int overlapErr = c1.bestOverlapWithError(r3, 3.0f);
 
-		// WITHOUT ERROR
+		System.out.println("Test bestOverlapWithError (>3 attendu) : " + overlapErr);
 
-		System.out.println("========WITHOUT SEQUENCING ERROR========");
-
-		Contig contig = new Contig(list_reads.get(0));
-		list_reads.remove(0);
-
-		// assemblage glouton
-		while (true) {
-			int idx = contig.nextRead(list_reads);
-			
-			if (idx == -1) {
-				break;
-			}
-
-			// Récuperer le meilleur read
-			Read best = list_reads.get(idx);
-
-			contig = contig.fusion(best);
-
-			list_reads.remove(idx);
-
-			System.out.println("Fusion with " + idx + ", still " + list_reads.size() + "reads to assemble... work in process");
-			
-		}
-
-
-
-		System.out.println("\nContig obtained with " + contig.nb_fusions + " reads");
-		System.out.println(contig.fastaFormat());
-
-		// WITH ERROR
-
-		System.out.println("========WITH SEQUENCING ERROR========");
-
-		Contig contigWitherror = new Contig(list_readsWithError.get(0));
-		float perror = 10.0f;
-		list_readsWithError.remove(0);
-
-		//assemblage glouton
-		while (true) {
-			int idx = contigWitherror.nextReadWithErrors(list_readsWithError, perror);
-
-			if (idx == -1) {
-				break;
-			}
-
-			// recuperer le meilleur read
-			Read best = list_readsWithError.get(idx);
-			contigWitherror = contigWitherror.fusionWithError(best, perror);
-			list_readsWithError.remove(idx);
-
-			System.out.println("Fusion with " + idx + ", still " + list_readsWithError.size() + "reads to assemble... work in process");
-		}
-
-		System.out.println("\nContig obtained with " + contigWitherror.nb_fusions + " reads (with sequencing errors)");
-		System.out.println(contigWitherror.fastaFormat());
-
-
+		// ---------- Test 6 : fusionWithError ----------
+		Contig c3 = c1.fusionWithError(r3, 3.0f);
+		System.out.println("Test fusionWithError : " + c3.getSeq());
 		
     }
 

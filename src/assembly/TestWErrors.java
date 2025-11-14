@@ -9,7 +9,7 @@ public class TestWErrors {
 	public static void main(String[] args) throws IOException {
 		System.out.println(System.getProperty("user.dir"));
 
-		String filenamewitherror = "/src/assembly/my_reads_with_sequencing_errors.txt";
+		String filenamewitherror = "/src/assembly/my_reads_with_sequencing_errors2.txt";
 
 		File monFichierTextewitherror = new File(System.getProperty("user.dir") + filenamewitherror);
 
@@ -35,7 +35,7 @@ public class TestWErrors {
 		System.out.println("========WITH SEQUENCING ERROR========");
 
 		Contig contigWitherror = new Contig(list_readsWithError.get(0));
-		float perror = 4.0f;
+		float perror = 3.0f;
 		list_readsWithError.remove(0);
 
 		//assemblage glouton
